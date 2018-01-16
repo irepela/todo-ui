@@ -1,8 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Todo} from './todo';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class TodoDataService {
+
+  private mockHost = '../../assets/mockData/';
 
   // Placeholder for last id so we can simulate
   // automatic incrementing of id's
@@ -11,7 +15,7 @@ export class TodoDataService {
   // Placeholder for todo's
   todos: Todo[] = [];
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
   // Simulate POST /todos
@@ -31,13 +35,21 @@ export class TodoDataService {
   }
 
   // Simulate PUT /todos/:id
-  updateTodoById(id: number, values: Object = {}): Todo {
+  private updateTodoById(id: number, isCompleted: boolean): Todo {
     const todo = this.getTodoById(id);
     if (!todo) {
       return null;
     }
-    Object.assign(todo, values);
+    todo.complete = isCompleted;
     return todo;
+  }
+
+  initializeTodos(savedTodos: Array<Todo>) {
+    this.todos = [...savedTodos];
+  }
+
+  getInitialTodos(): Observable<{todos: Array<Todo>}> {
+    return this.http.get<{todos: Array<Todo>}>(this.mockHost + 'todos.json');
   }
 
   // Simulate GET /todos
@@ -54,9 +66,7 @@ export class TodoDataService {
 
   // Toggle todo complete
   toggleTodoComplete(todo: Todo) {
-    const updatedTodo = this.updateTodoById(todo.id, {
-      complete: !todo.complete
-    });
+    const updatedTodo = this.updateTodoById(todo.id, !todo.complete);
     return updatedTodo;
   }
 

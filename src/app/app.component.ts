@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TodoDataService} from './todo/todo-data.service';
 import {Todo} from './todo/todo';
-
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +9,18 @@ import {Todo} from './todo/todo';
   styleUrls: ['./app.component.scss'],
   providers: [TodoDataService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
 
+  private todosSubscription: Subscription;
   newTodo: Todo = new Todo();
 
   constructor(private todoDataService: TodoDataService) {
+  }
+
+  ngOnInit() {
+    this.todosSubscription = this.todoDataService.getInitialTodos().subscribe(data => {
+       this.todoDataService.initializeTodos(data.todos);
+    });
   }
 
   addTodo() {
@@ -31,6 +38,10 @@ export class AppComponent {
 
   get todos() {
     return this.todoDataService.getAllTodos();
+  }
+
+  ngOnDestroy() {
+    this.todosSubscription.unsubscribe();
   }
 
 }
