@@ -35,25 +35,24 @@ export class TodoDataService {
   }
 
   // Simulate PUT /todos/:id
-  private updateTodoById(id: number, isCompleted: boolean): Todo {
+  updateTodoById(id: number, values: Object = {}): Todo {
     const todo = this.getTodoById(id);
     if (!todo) {
       return null;
     }
-    todo.complete = isCompleted;
+    Object.assign(todo, values);
     return todo;
   }
 
-  initializeTodos(savedTodos: Array<Todo>) {
-    this.todos = [...savedTodos];
+  initializeTodos(todos: Array<Todo>) {
+    this.todos = [...todos];
   }
 
   getInitialTodos(): Observable<{todos: Array<Todo>}> {
     return this.http.get<{todos: Array<Todo>}>(this.mockHost + 'todos.json');
   }
 
-  // Simulate GET /todos
-  getAllTodos(): Todo[] {
+  getAllTodos(): Array<Todo> {
     return this.todos;
   }
 
@@ -66,7 +65,9 @@ export class TodoDataService {
 
   // Toggle todo complete
   toggleTodoComplete(todo: Todo) {
-    const updatedTodo = this.updateTodoById(todo.id, !todo.complete);
+    const updatedTodo = this.updateTodoById(todo.id, {
+      complete: !todo.complete
+    });
     return updatedTodo;
   }
 

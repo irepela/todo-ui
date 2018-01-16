@@ -3,6 +3,7 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import {TodoDataService} from './todo/todo-data.service';
 import {Todo} from './todo/todo';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppComponent', () => {
   let fixture;
@@ -12,7 +13,8 @@ describe('AppComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsModule
+        FormsModule,
+        HttpClientModule
       ],
       declarations: [
         AppComponent
