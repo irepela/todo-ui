@@ -1,34 +1,27 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {User} from './user';
+import { map } from 'rxjs/operators';
+import {appConfig} from '../app.config';
 
 @Injectable()
 export class AuthenticationService {
+  constructor(private http: HttpClient) { }
 
-  private _user: User;
+  login(username: string, password: string) {
+    return this.http.post<any>(appConfig.apiUrl + '/authenticate', { username: username, password: password })
+      .pipe(map(user => {
+        // login successful if there's a jwt token in the response
+        if (user && user.token) {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
 
-  constructor(private http: HttpClient, private router: Router) {
+        return user;
+      }));
   }
 
-  private onAuthenticated(response: any): void {
-    this._user = response.json().user;
-    localStorage.setItem('token', response.json().token);
-    // Navigate to 'todo-list' page
-    // this.router.navigate(['/todo-list']);
-  }
-
-  authenticate(email: string, password: string) {
-    this.http.post('/login', {email, password})
-      .subscribe(response => this.onAuthenticated(response));
-  }
-
-  signUp(user: User) {
-    this.http.post('/sign-up', user)
-      .subscribe(response => this.onAuthenticated(response));
-  }
-
-  user(): User {
-    return this._user;
+  logout() {
+    // remove user from local storage to log user out
+    localStorage.removeItem('currentUser');
   }
 }

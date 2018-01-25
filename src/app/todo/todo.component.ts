@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {TodoDataService} from './todo-data.service';
 import {Todo} from './todo';
+import {User} from '../user/user';
+import {UserService} from '../user/user.service';
 
 @Component({
   selector: 'app-todo-component',
@@ -13,8 +15,10 @@ export class TodoComponent implements OnInit, OnDestroy {
 
   private todosSubscription: Subscription;
   newTodo: Todo = new Todo();
+  currentUser: User;
 
   constructor(private todoDataService: TodoDataService) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
