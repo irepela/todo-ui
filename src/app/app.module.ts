@@ -11,7 +11,6 @@ import {AlertComponent} from './alert/alert.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {JwtInterceptorProvider} from './shared/jwt.interceptor';
-import {ErrorInterceptorProvider} from './shared/error.interceptor';
 import {AlertService} from './alert/alert.service';
 import {UserService} from './user/user.service';
 import {TodoDataService} from './todo/todo-data.service';
@@ -37,8 +36,8 @@ import {TodoDataService} from './todo/todo-data.service';
     AuthenticationService,
     UserService,
     TodoDataService,
-    JwtInterceptorProvider,
-    ErrorInterceptorProvider],
+    JwtInterceptorProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

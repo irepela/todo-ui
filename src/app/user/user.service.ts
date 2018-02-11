@@ -7,23 +7,7 @@ import {appConfig} from '../app.config';
 export class UserService {
     constructor(private http: HttpClient) { }
 
-    getAll() {
-        return this.http.get<User[]>(appConfig.apiUrl + '/users');
-    }
-
-    getById(_id: string) {
-        return this.http.get(appConfig.apiUrl + '/users/' + _id);
-    }
-
     create(user: User) {
-        return this.http.post(appConfig.apiUrl + '/register', user, {withCredentials: true});
-    }
-
-    update(user: User) {
-        return this.http.put(appConfig.apiUrl + '/users/' + user._id, user);
-    }
-
-    delete(_id: string) {
-        return this.http.delete(appConfig.apiUrl + '/users/' + _id);
+        return this.http.post(appConfig.apiUrl + '/register', user);
     }
 }
