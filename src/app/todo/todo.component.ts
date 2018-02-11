@@ -4,6 +4,8 @@ import {TodoDataService} from './todo-data.service';
 import {Todo} from './todo';
 import {User} from '../user/user';
 import {UserService} from '../user/user.service';
+import {AuthenticationService} from '../shared/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-todo-component',
@@ -17,8 +19,10 @@ export class TodoComponent implements OnInit, OnDestroy {
   newTodo: Todo = new Todo();
   currentUser: User;
 
-  constructor(private todoDataService: TodoDataService) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  constructor(private todoDataService: TodoDataService,
+              private authService: AuthenticationService,
+              private router: Router) {
+    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
@@ -48,6 +52,11 @@ export class TodoComponent implements OnInit, OnDestroy {
     if (this.todosSubscription) {
       this.todosSubscription.unsubscribe();
     }
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

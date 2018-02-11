@@ -31,10 +31,14 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    if (data.error) {
+                      this.alertService.error(data.error.message);
+                      this.loading = false;
+                    } else {
+                      this.router.navigate([this.returnUrl]);
+                    }
                 },
                 error => {
-                    console.log(error);
                     this.alertService.error(error);
                     this.loading = false;
                 });
