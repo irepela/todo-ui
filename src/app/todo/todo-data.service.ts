@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Todo} from './todo';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
+import {appConfig} from '../app.config';
 
 @Injectable()
 export class TodoDataService {
@@ -18,19 +19,25 @@ export class TodoDataService {
   constructor(private http: HttpClient) {
   }
 
-  // Simulate POST /todos
-  addTodo(todo: Todo): TodoDataService {
+  addTodo(todo: Todo) {
     if (!todo.id) {
       todo.id = ++this.lastId;
     }
-    this.todos.push(todo);
+    const currUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.http.post<any>(appConfig.apiUrl + '/addTodo', { username: currUser.username, todo: todo })
+      .subscribe(response => {
+        this.todos = [...response.todos];
+      });
     return this;
   }
 
   // Simulate DELETE /todos/:id
   deleteTodoById(id: number): TodoDataService {
-    this.todos = this.todos
-      .filter(todo => todo.id !== id);
+    const currUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.http.post<any>(appConfig.apiUrl + '/deleteTodo', { username: currUser.username, todoId: id })
+      .subscribe(response => {
+        this.todos = [...response.todos];
+      });
     return this;
   }
 
@@ -48,8 +55,8 @@ export class TodoDataService {
     this.todos = [...todos];
   }
 
-  getInitialTodos(): Observable<{todos: Array<Todo>}> {
-    return this.http.get<{todos: Array<Todo>}>(this.mockHost + 'todos.json');
+  getInitialTodos(currUser): Observable<Array<Todo>> {
+    return this.http.get<any>(appConfig.apiUrl + '/getTodos/' + currUser.username);
   }
 
   getAllTodos(): Array<Todo> {
@@ -68,6 +75,9 @@ export class TodoDataService {
     const updatedTodo = this.updateTodoById(todo.id, {
       complete: !todo.complete
     });
+    const currUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.http.post<any>(appConfig.apiUrl + '/toggleTodo', { username: currUser.username, todo: todo })
+      .subscribe(response => {});
     return updatedTodo;
   }
 

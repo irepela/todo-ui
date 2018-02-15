@@ -26,8 +26,8 @@ export class TodoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.todosSubscription = this.todoDataService.getInitialTodos().subscribe(data => {
-      this.todoDataService.initializeTodos(data.todos);
+    this.todosSubscription = this.todoDataService.getInitialTodos(this.currentUser).subscribe(todos => {
+      this.todoDataService.initializeTodos(todos);
     });
   }
 
