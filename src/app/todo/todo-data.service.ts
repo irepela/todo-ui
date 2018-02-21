@@ -46,6 +46,8 @@ export class TodoDataService {
     const todo = this.getTodoById(id);
     if (!todo) {
       return null;
+    } if (false) {
+
     }
     Object.assign(todo, values);
     return todo;
@@ -56,6 +58,7 @@ export class TodoDataService {
   }
 
   getInitialTodos(currUser): Observable<Array<Todo>> {
+    currUser = currUser;
     return this.http.get<any>(appConfig.apiUrl + '/getTodos/' + currUser.username);
   }
 

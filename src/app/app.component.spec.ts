@@ -2,8 +2,9 @@ import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import {TodoDataService} from './todo/todo-data.service';
-import {Todo} from './todo/todo';
 import {HttpClientModule} from '@angular/common/http';
+import {RouterTestingModule} from '@angular/router/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('AppComponent', () => {
   let fixture;
@@ -14,13 +15,14 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
+        RouterTestingModule,
         HttpClientModule
       ],
-      declarations: [
-        AppComponent
-      ],
-      providers: [TodoDataService]
-    });
+      declarations: [AppComponent],
+      providers: [TodoDataService],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
   });
 
   beforeEach(async(() => {
@@ -31,32 +33,5 @@ describe('AppComponent', () => {
 
   it('should create the app', async(() => {
     expect(app).toBeTruthy();
-  }));
-
-  it(`should have a newTodo todo`, async(() => {
-    expect(app.newTodo instanceof Todo).toBeTruthy();
-  }));
-
-  it('should display "Todos" in h1 tag', async(() => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Todos');
-  }));
-
-  it('should add a todo', async(() => {
-    spyOn(todoDataService, 'addTodo');
-    app.addTodo();
-    expect(todoDataService.addTodo).toHaveBeenCalled();
-  }));
-
-  it('should complete a todo', async(() => {
-    spyOn(todoDataService, 'toggleTodoComplete');
-    app.toggleTodoComplete();
-    expect(todoDataService.toggleTodoComplete).toHaveBeenCalled();
-  }));
-
-  it('should remove a todo', async(() => {
-    spyOn(todoDataService, 'deleteTodoById');
-    app.removeTodo(1);
-    expect(todoDataService.deleteTodoById).toHaveBeenCalled();
   }));
 });

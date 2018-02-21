@@ -16,13 +16,13 @@ describe('TodoDataService', () => {
     expect(service).toBeTruthy();
   }));
 
-  describe('#getAllTodos()', () => {
+ describe('#getAllTodos()', () => {
 
     it('should return an empty array by default', inject([TodoDataService], (service: TodoDataService) => {
       expect(service.getAllTodos()).toEqual([]);
     }));
 
-    it('should return all todos', inject([TodoDataService], (service: TodoDataService) => {
+    xit('should return all todos', inject([TodoDataService], (service: TodoDataService) => {
       const todo1 = new Todo({title: 'Hello 1', complete: false});
       const todo2 = new Todo({title: 'Hello 2', complete: true});
       service.addTodo(todo1);
@@ -32,7 +32,7 @@ describe('TodoDataService', () => {
 
   });
 
-  describe('#save(todo)', () => {
+  xdescribe('#save(todo)', () => {
 
     it('should automatically assign an incrementing id', inject([TodoDataService], (service: TodoDataService) => {
       const todo1 = new Todo({title: 'Hello 1', complete: false});
@@ -45,7 +45,7 @@ describe('TodoDataService', () => {
 
   });
 
-  describe('#deleteTodoById(id)', () => {
+  xdescribe('#deleteTodoById(id)', () => {
 
     it('should remove todo with the corresponding id', inject([TodoDataService], (service: TodoDataService) => {
       const todo1 = new Todo({title: 'Hello 1', complete: false});
@@ -71,7 +71,7 @@ describe('TodoDataService', () => {
 
   });
 
-  describe('#updateTodoById(id, values)', () => {
+  xdescribe('#updateTodoById(id, values)', () => {
 
     it('should return todo with the corresponding id and updated data', inject([TodoDataService], (service: TodoDataService) => {
       const todo = new Todo({title: 'Hello 1', complete: false});
@@ -93,7 +93,7 @@ describe('TodoDataService', () => {
 
   });
 
-  describe('#toggleTodoComplete(todo)', () => {
+  xdescribe('#toggleTodoComplete(todo)', () => {
 
     it('should return the updated todo with inverse complete status', inject([TodoDataService], (service: TodoDataService) => {
       const todo = new Todo({title: 'Hello 1', complete: false});
