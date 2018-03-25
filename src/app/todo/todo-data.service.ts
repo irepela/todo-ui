@@ -20,9 +20,6 @@ export class TodoDataService {
   }
 
   addTodo(todo: Todo) {
-    if (!todo.id) {
-      todo.id = ++this.lastId;
-    }
     const currUser = JSON.parse(sessionStorage.getItem('currentUser'));
     this.http.post<any>(appConfig.apiUrl + '/addTodo', { username: currUser.username, todo: todo })
       .subscribe(response => {
@@ -32,7 +29,7 @@ export class TodoDataService {
   }
 
   // Simulate DELETE /todos/:id
-  deleteTodoById(id: number): TodoDataService {
+  deleteTodoById(id: string): TodoDataService {
     const currUser = JSON.parse(sessionStorage.getItem('currentUser'));
     this.http.post<any>(appConfig.apiUrl + '/deleteTodo', { username: currUser.username, todoId: id })
       .subscribe(response => {
@@ -42,7 +39,7 @@ export class TodoDataService {
   }
 
   // Simulate PUT /todos/:id
-  updateTodoById(id: number, values: Object = {}): Todo {
+  updateTodoById(id: string, values: Object = {}): Todo {
     const todo = this.getTodoById(id);
     if (!todo) {
       return null;
@@ -67,7 +64,7 @@ export class TodoDataService {
   }
 
   // Simulate GET /todos/:id
-  getTodoById(id: number): Todo {
+  getTodoById(id: string): Todo {
     return this.todos
       .filter(todo => todo.id === id)
       .pop();
